@@ -1,0 +1,9 @@
+{
+	"CoLA":{"width_mult_list":[0.25,0.5,0.5,0.5], "exit_threshold": 0.06},
+	"MRPC":{"width_mult_list":[0.5,0.55,0.75,0.75], "exit_threshold": 0.25},
+	"RTE":{"width_mult_list": [0.5,0.75,0.75,0.75], "exit_threshold": 0.06},
+	"SST-2":{"width_mult_list":[0.5,0.55,0.55,0.75], "exit_threshold": 0.4},
+	"QNLI":{"width_mult_list": [0.5,0.55,0.75,0.75], "exit_threshold": 0.35},
+	"MNLI":{"width_mult_list": [0.6,0.65,0.65,0.75], "exit_threshold": 0.24},
+	"QQP":{"width_mult_list": [0.5,0.65,0.75,0.75], "exit_threshold": 0.1},
+}

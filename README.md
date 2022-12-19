@@ -1,8 +1,8 @@
 Flexible BERT with width- and depth-dynamic inference
 =====================================================
-This is the code for paper "Flexible BERT with width- and depth-dynamic inference". The inference framework is built on BERT with subnets and ahieves width- and depth-dynamic inference regarding different input, yielding reduced computation and faster inference. 
+This is the code for paper "Flexible BERT with width- and depth-dynamic inference". The inference framework is built on BERT with optimized subnets, and achieves width- and depth-dynamic inference regarding different input, yielding reduced computation and faster inference on NLU tasks. 
 
-Installation
+## Installation
 ============
 Run command below to install the environment
 ```bash
@@ -11,9 +11,9 @@ pip install -r requirements.txt
 
 Train a BERT model with width- and depth-adaptive subnets
 =========================================================
-Our codes are based on [DynaBERT](https://github.com/huawei-noah/Pretrained-Language-Model/tree/master/DynaBERT), include three steps: width-adaptive training, depth-adaptive training, and final fine-tuning. The differences are: (1) we apply Neural grafting technique at the first stage to boost the subnets; (2) we incremantally pick up BERT layers for depth-adaptive traning.
+Our codes are based on [DynaBERT](https://github.com/huawei-noah/Pretrained-Language-Model/tree/master/DynaBERT), including three steps: width-adaptive training, depth-adaptive training, and final fine-tuning. The differences are: (1) we apply Neural grafting technique at the first stage to boost the subnets; (2) we incremantally pick up BERT layers for depth-adaptive traning.
 
-Preparation: (1) download Pretrained task-specific BERT models from [huggingface](https://github.com/huggingface/transformers) and put them in the folder `$BERT_DIR`; (2) generate augmented data using [TinyBERT](https://github.com/huawei-noah/Pretrained-Language-Model/tree/master/TinyBERT) and put them in in the folder `$DATA_DIR`.
+Preparation: (1) download Pretrained task-specific BERT models from [huggingface](https://github.com/huggingface/transformers) and put them in the folder `$BERT_DIR`; (2) generate augmented data using [TinyBERT](https://github.com/huawei-noah/Pretrained-Language-Model/tree/master/TinyBERT) and put them in the folder `$DATA_DIR`.
 
 Run script `run_glue.sh` where RTE data set is taken as an example. The final BERT model with Neural grafting boosted subnets is saved in `$WD_BERT_DIR`.  The script includes three-step training below.
 
@@ -42,7 +42,6 @@ python run_glue.py \
 	--training_phase dynabertw \
 	--graft_during_training \
 	--data_aug 
-
 ```
 
 (2) Depth-adaptive training.
@@ -67,10 +66,9 @@ python run_glue.py \
 	--logging_steps 200 \
 	--training_phase dynabert  \
 	--data_aug \
-
 ```
 
-(3) final fine-tuning, this is optional.
+(3) Final fine-tuning without data augmentation. this is optional.
 
 ```
 python run_glue.py \
@@ -89,7 +87,6 @@ python run_glue.py \
 	--depth_mult_list 0.5,0.75,1.0 \
 	--logging_steps 20 \
 	--training_phase final_finetuning \
-
 ```
 
 Train gating modules enabling width-dynamic inference
@@ -115,7 +112,6 @@ python train_gate.py \
 	--width_mult_list 0.25,0.5,0.75,1.0 \
 	--gate_setting 0.25,0.5,0.75,1.0 \
 	--training_phase traingate \
-
 ```
 
 Dynamic inference
@@ -125,7 +121,8 @@ We offer differen ways of inference: static inference using specific subnets, wi
 (1) static inference on specific subnets.
 
 ```
-# --static, static inference. --width_mul_list, offering four identical width ratios. --depth_mult_list specifies the depth ratio.
+# --static, static inference. 
+# --width_mul_list, offering four identical width ratios. --depth_mult_list, specifying the depth ratio.
 
 python3 train_gate.py \
 	--model_type bert \
@@ -140,7 +137,6 @@ python3 train_gate.py \
 	--do_eval \
 	--record_gpu_time \
 	--static \
-
 ```
 
 (2) width-dynamic inference, on the whole model(depth=1.0).
@@ -161,13 +157,14 @@ python3 train_gate_new.py \
 	--do_eval \
 	--record_gpu_time \
 	--w_dynamic \
-
 ```
 
 (3) width- and depth-dynamic inference.
 
 ```
---wd_dynamic, width- and depth-dynamic. --early_exit, depth-dynamic inference. --exit_threshold, exit threshold.
+--wd_dynamic, width- and depth-dynamic. 
+--early_exit, depth-dynamic inference. --exit_threshold, exit threshold.
+
 python3 train_gate_new.py \
 	--model_type bert \
 	--task_name $TASK \
@@ -187,3 +184,4 @@ python3 train_gate_new.py \
 ```
 
 We also offer the BERT models enabling dynamic inference framework we trained on GLUE benchmark here.
+The config of the best tradeoff inference results on GLUE tasks is in `best_tradeoff_inference_config.json`.
