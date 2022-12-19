@@ -3,14 +3,12 @@ Flexible BERT with width- and depth-dynamic inference
 This is the code for paper "Flexible BERT with width- and depth-dynamic inference". The inference framework is built on BERT with optimized subnets, and achieves width- and depth-dynamic inference regarding different input, yielding reduced computation and faster inference on NLU tasks. 
 
 ## Installation
-============
 Run command below to install the environment
 ```bash
 pip install -r requirements.txt
 ```
 
-Train a BERT model with width- and depth-adaptive subnets
-=========================================================
+## Train a BERT model with width- and depth-adaptive subnets
 Our codes are based on [DynaBERT](https://github.com/huawei-noah/Pretrained-Language-Model/tree/master/DynaBERT), including three steps: width-adaptive training, depth-adaptive training, and final fine-tuning. The differences are: (1) we apply Neural grafting technique at the first stage to boost the subnets; (2) we incremantally pick up BERT layers for depth-adaptive traning.
 
 Preparation: (1) download Pretrained task-specific BERT models from [huggingface](https://github.com/huggingface/transformers) and put them in the folder `$BERT_DIR`; (2) generate augmented data using [TinyBERT](https://github.com/huawei-noah/Pretrained-Language-Model/tree/master/TinyBERT) and put them in the folder `$DATA_DIR`.
@@ -89,8 +87,7 @@ python run_glue.py \
 	--training_phase final_finetuning \
 ```
 
-Train gating modules enabling width-dynamic inference
-=========================================================
+## Train gating modules enabling width-dynamic inference
 Run script `train_glue.sh` to train tha gating modules. 
 
 ```
@@ -114,8 +111,7 @@ python train_gate.py \
 	--training_phase traingate \
 ```
 
-Dynamic inference
-=========================================================
+## Dynamic inference
 We offer differen ways of inference: static inference using specific subnets, width-dynamic and both with- and depth-dynamic inference. Run script `gate_inference.sh`. 
 
 (1) static inference on specific subnets.
@@ -183,5 +179,5 @@ python3 train_gate_new.py \
 
 ```
 
-We also offer the BERT models enabling dynamic inference framework we trained on GLUE benchmark here.
+We also offer the BERT models enabling dynamic inference framework we trained on GLUE benchmark [here](https://nextcloud.hpi.de/s/F9azocsAB3gcm4c).
 The config of the best tradeoff inference results on GLUE tasks is in `best_tradeoff_inference_config.json`.
